@@ -1271,6 +1271,17 @@ async function submitForm() {
 }
 
 updateProgress(1);
+
+// Si viene con #personalizado en la URL, ir directo al paso 2 con pack personalizado seleccionado
+if (window.location.hash === '#personalizado') {
+  const customCard = document.getElementById('planCustom');
+  selectPlanType(customCard, 'custom');
+  showStep(2);
+  setTimeout(() => {
+    const el = document.getElementById('custom-svcs');
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 400);
+}
 </script>
 </body>
 </html>
