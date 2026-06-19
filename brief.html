@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empezá tu prueba gratuita — De Titta Motion Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9A84C;--gold-light:#E8C96A;--gold-dim:rgba(201,168,76,0.12);
+  --blue:#3A7BD5;--blue-light:#5B9DFF;--blue-dim:rgba(91,157,255,0.1);
+  --bg:#0a0a0a;--bg2:#111;--bg3:#181818;--bg4:#222;
+  --text:#f0f0f0;--text-muted:#888;--text-dim:#444;
+  --border:rgba(255,255,255,0.07);--border-hover:rgba(255,255,255,0.14);
+  --radius:14px;--radius-sm:9px;--radius-xs:6px;
+  --green:#25D366;--green-dim:rgba(37,211,102,0.1);
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:68px;background:rgba(10,10,10,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo img{height:40px;width:auto;object-fit:contain}
+.nav-back{font-size:12px;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color .2s}
+.nav-back:hover{color:var(--gold)}
+.nav-timer{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--text-dim);letter-spacing:.5px}
+.nav-timer-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* PROGRESS BAR */
+.progress-bar-wrap{position:fixed;top:68px;left:0;right:0;z-index:199;background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 5vw}
+.progress-bar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-pct{font-size:11px;font-weight:700;color:var(--gold)}
+.progress-steps-label{font-size:11px;color:var(--text-dim)}
+.progress-track{height:3px;background:var(--bg4);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--blue-light));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.step-dots{display:flex;gap:6px;margin-top:8px}
+.step-dot{height:3px;flex:1;border-radius:99px;background:var(--bg4);transition:background .4s}
+.step-dot.done{background:var(--gold)}
+.step-dot.active{background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+
+/* HERO */
+.brief-hero{padding:140px 5vw 40px;text-align:center;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(201,168,76,0.06) 0%,transparent 70%)}
+.brief-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:999px;padding:6px 16px;font-size:11px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:20px}
+.brief-hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,4.5vw,52px);font-weight:700;letter-spacing:-1.5px;line-height:1.08;margin-bottom:14px}
+.brief-hero h1 em{color:var(--blue-light);font-style:normal}
+.brief-hero p{font-size:15px;color:var(--text-muted);max-width:460px;margin:0 auto 20px;line-height:1.65}
+.hero-badges{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:4px}
+.hero-badge{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--text-muted)}
+.hero-badge::before{content:'✓';color:var(--gold);font-weight:700}
+.time-estimate{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:6px 14px;font-size:12px;color:var(--text-muted);margin-top:8px}
+.time-estimate strong{color:var(--text)}
+
+/* FORM */
+.form-wrap{max-width:660px;margin:0 auto;padding:32px 5vw 100px}
+
+/* STEP */
+.step-panel{display:none;animation:fadeUp .4s cubic-bezier(.21,.6,.35,1)}
+.step-panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:16px}
+.card-title{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;letter-spacing:-.5px;margin-bottom:5px}
+.card-sub{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:22px}
+.step-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+
+/* FIELD */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:600;letter-spacing:.3px;margin-bottom:6px;color:var(--text)}
+.field label .req{color:var(--gold)}
+.field input,.field select,.field textarea{width:100%;background:var(--bg3);border:1.5px solid rgba(255,255,255,0.08);border-radius:var(--radius-sm);padding:11px 13px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;transition:border-color .2s,box-shadow .2s;outline:none;-webkit-appearance:none;appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(201,168,76,0.5);box-shadow:0 0 0 3px rgba(201,168,76,0.07)}
+.field input.valid{border-color:rgba(37,211,102,0.4)}
+.field input::placeholder,.field textarea::placeholder{color:var(--text-dim)}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;cursor:pointer}
+.field textarea{resize:vertical;min-height:76px;line-height:1.6}
+.field-hint{font-size:11px;color:var(--text-dim);margin-top:5px;line-height:1.5}
+.error-msg{font-size:11px;color:#ff6b6b;margin-top:4px;display:none}
+.field.has-error input,.field.has-error select,.field.has-error textarea{border-color:#ff6b6b !important}
+.field.has-error .error-msg{display:block}
+.field.is-valid input{border-color:rgba(37,211,102,0.35)}
+.valid-icon{display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#3ddc84;font-size:13px;font-weight:700}
+.field-wrap{position:relative}
+.field.is-valid .valid-icon{display:block}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* PLAN CARDS */
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+.plan-card{background:var(--bg3);border:2px solid rgba(255,255,255,0.07);border-radius:var(--radius);padding:22px 18px;cursor:pointer;transition:all .25s;user-select:none;position:relative;overflow:hidden}
+.plan-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%);opacity:0;transition:opacity .3s}
+.plan-card:hover{border-color:rgba(201,168,76,0.3);transform:translateY(-2px)}
+.plan-card:hover::before{opacity:1}
+.plan-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.05)}
+.plan-card.selected::before{opacity:1}
+.plan-icon{font-size:28px;margin-bottom:12px}
+.plan-name{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px}
+.plan-desc{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:14px}
+.plan-check{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;transition:all .25s}
+.plan-card.selected .plan-check{background:var(--gold);border-color:var(--gold)}
+.plan-card.selected .plan-check::after{content:'✓';font-size:10px;font-weight:700;color:#111}
+.plan-features{list-style:none;margin-bottom:14px}
+.plan-features li{font-size:11px;color:var(--text-muted);padding:3px 0;display:flex;align-items:flex-start;gap:6px;line-height:1.4}
+.plan-features li::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0;font-size:10px;margin-top:1px}
+
+/* PACK CARDS */
+.pack-list{display:flex;flex-direction:column;gap:10px}
+.pack-card{background:var(--bg3);border:1.5px solid rgba(255,255,255,0.07);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .25s;user-select:none;position:relative}
+.pack-card:hover{border-color:rgba(201,168,76,0.3);transform:translateY(-1px)}
+.pack-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.04)}
+.pack-card.featured{border-color:rgba(201,168,76,0.35)}
+.pack-badge{position:absolute;top:14px;right:14px;background:var(--gold);color:#111;font-size:9px;font-weight:800;letter-spacing:.8px;padding:3px 10px;border-radius:999px;text-transform:uppercase}
+.pack-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.pack-name{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700}
+.pack-price-wrap{text-align:right}
+.pack-price{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--gold);line-height:1}
+.pack-price-desc{font-size:10px;color:var(--text-dim);margin-top:2px}
+.pack-desc{font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5}
+.pack-items{display:flex;flex-wrap:wrap;gap:6px}
+.pack-item{font-size:10px;font-weight:500;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:3px 10px;color:var(--text-muted)}
+.pack-discount{font-size:11px;color:var(--text-dim);margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.pack-discount strong{color:var(--gold)}
+.pack-select-check{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s;margin-top:2px}
+.pack-card.selected .pack-select-check{background:var(--gold);border-color:var(--gold)}
+.pack-card.selected .pack-select-check::after{content:'✓';font-size:9px;font-weight:700;color:#111}
+
+/* SVC CARDS */
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.svc-card{background:var(--bg3);border:1.5px solid rgba(255,255,255,0.07);border-radius:var(--radius-sm);padding:13px 11px;cursor:pointer;transition:all .2s;user-select:none;display:flex;align-items:flex-start;gap:9px}
+.svc-card:hover{border-color:rgba(201,168,76,0.3)}
+.svc-card.selected{border-color:var(--gold);background:var(--gold-dim)}
+.svc-icon{width:32px;height:32px;border-radius:7px;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.svc-text strong{display:block;font-size:11px;font-weight:600;margin-bottom:1px}
+.svc-text span{font-size:10px;color:var(--text-muted);line-height:1.3}
+.svc-check{width:15px;height:15px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);margin-left:auto;flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.svc-card.selected .svc-check{background:var(--gold);border-color:var(--gold)}
+.svc-card.selected .svc-check::after{content:'✓';font-size:8px;font-weight:700;color:#111}
+
+/* LEVEL CARDS */
+.level-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.level-card{background:var(--bg3);border:1.5px solid rgba(255,255,255,0.07);border-radius:var(--radius-sm);padding:14px 12px;cursor:pointer;transition:all .2s;user-select:none;position:relative}
+.level-card:hover{border-color:rgba(201,168,76,0.3)}
+.level-card.selected{border-color:var(--gold);background:var(--gold-dim)}
+.level-card-price{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:2px}
+.level-card-name{font-size:12px;font-weight:600;margin-bottom:6px}
+.level-card-desc{font-size:10px;color:var(--text-muted);line-height:1.4}
+.level-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1e1e1e;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--text-muted);width:180px;z-index:10;line-height:1.5;box-shadow:var(--shadow)}
+.level-card:hover .level-tooltip{display:block}
+
+/* RADIO PILLS */
+.radio-group{display:flex;flex-wrap:wrap;gap:7px}
+.radio-pill{padding:7px 14px;border-radius:999px;font-size:12px;font-weight:500;border:1.5px solid rgba(255,255,255,0.09);background:var(--bg3);cursor:pointer;transition:all .2s;user-select:none}
+.radio-pill:hover{border-color:rgba(201,168,76,0.35)}
+.radio-pill.selected{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
+
+/* MULTI PILLS */
+.multi-pills{display:flex;flex-wrap:wrap;gap:7px}
+.multi-pill{padding:7px 14px;border-radius:999px;font-size:12px;font-weight:500;border:1.5px solid rgba(255,255,255,0.09);background:var(--bg3);cursor:pointer;transition:all .2s;user-select:none}
+.multi-pill:hover{border-color:rgba(201,168,76,0.35)}
+.multi-pill.selected{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
+
+/* COND BLOCK */
+.cond-block{display:none;border:1px solid rgba(91,157,255,0.15);border-left:3px solid var(--blue-light);background:rgba(91,157,255,0.04);border-radius:var(--radius-sm);padding:18px 16px;margin-top:4px;margin-bottom:14px}
+.cond-block.on{display:block;animation:fadeUp .3s ease}
+.cond-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue-light);margin-bottom:14px}
+
+/* PRUEBA OPTIONS */
+.prueba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.prueba-card{background:var(--bg3);border:1.5px solid rgba(255,255,255,0.08);border-radius:var(--radius-sm);padding:16px 14px;cursor:pointer;transition:all .2s;user-select:none;text-align:center}
+.prueba-card:hover{border-color:rgba(201,168,76,0.3)}
+.prueba-card.selected{border-color:var(--gold);background:var(--gold-dim)}
+.prueba-card-icon{font-size:22px;margin-bottom:8px}
+.prueba-card strong{display:block;font-size:12px;font-weight:600;margin-bottom:4px}
+.prueba-card span{font-size:11px;color:var(--text-muted);line-height:1.4;display:block;margin-bottom:8px}
+.prueba-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 9px;border-radius:999px}
+.prueba-tag.free{background:rgba(37,211,102,0.12);color:#3ddc84;border:1px solid rgba(37,211,102,0.25)}
+.prueba-tag.paid{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(201,168,76,0.25)}
+
+/* REVISIONES NOTE */
+.revisiones-note{display:flex;align-items:center;gap:10px;background:rgba(37,211,102,0.06);border:1px solid rgba(37,211,102,0.2);border-radius:var(--radius-sm);padding:11px 14px;font-size:12px;color:var(--text-muted);margin-top:4px}
+.revisiones-note strong{color:#3ddc84}
+
+/* PRECIO CALC */
+.precio-calc{background:var(--gold-dim);border:1px solid rgba(201,168,76,0.2);border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;margin-top:4px;display:none}
+.precio-calc strong{color:var(--gold)}
+
+/* DRIVE BOX */
+.drive-box{background:var(--bg3);border:1.5px dashed rgba(201,168,76,0.25);border-radius:var(--radius-sm);padding:16px;text-align:center;margin-bottom:14px}
+.drive-box-icon{font-size:24px;margin-bottom:6px}
+.drive-box p{font-size:12px;color:var(--text-muted);line-height:1.6}
+
+/* TONE OPTIONS */
+.tone-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.tone-card{background:var(--bg3);border:1.5px solid rgba(255,255,255,0.07);border-radius:var(--radius-sm);padding:13px 10px;cursor:pointer;text-align:center;transition:all .2s;user-select:none}
+.tone-card:hover{border-color:rgba(201,168,76,0.3)}
+.tone-card.selected{border-color:var(--gold);background:var(--gold-dim)}
+.tone-card strong{display:block;font-size:12px;font-weight:600;margin-bottom:3px}
+.tone-card span{font-size:10px;color:var(--text-muted);line-height:1.3}
+
+/* RESUMEN */
+.resumen-block{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.resumen-block:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
+.resumen-block-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:10px}
+.resumen-row{display:flex;justify-content:space-between;align-items:flex-start;font-size:12px;padding:3px 0;gap:12px}
+.resumen-row span{color:var(--text-muted);flex-shrink:0}
+.resumen-row strong{color:var(--text);text-align:right}
+.resumen-pack-item{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.resumen-pack-item:last-child{border-bottom:none}
+.resumen-pack-item span{color:var(--text-muted)}
+.resumen-pack-item strong{color:var(--text)}
+
+/* SUCCESS */
+.success-panel{display:none;text-align:center;padding:40px 20px 80px}
+.success-panel.active{display:block;animation:fadeUp .6s ease}
+.success-icon-wrap{width:76px;height:76px;border-radius:50%;background:var(--gold-dim);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:34px}
+.success-panel h2{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;margin-bottom:10px}
+.success-panel p{font-size:14px;color:var(--text-muted);max-width:400px;margin:0 auto 24px;line-height:1.7}
+.next-steps{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;max-width:400px;margin:0 auto 24px;text-align:left}
+.next-step{display:flex;align-items:flex-start;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)}
+.next-step:last-child{border-bottom:none}
+.next-step-num{width:22px;height:22px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--gold);flex-shrink:0;margin-top:1px}
+.next-step-text strong{display:block;font-size:12px;font-weight:600;margin-bottom:2px}
+.next-step-text span{font-size:11px;color:var(--text-muted)}
+.next-step.done .next-step-num{background:var(--gold);color:#111}
+.success-wa{display:inline-flex;align-items:center;gap:8px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.3);color:#3ddc84;font-size:13px;font-weight:600;padding:11px 20px;border-radius:var(--radius-sm);text-decoration:none;transition:background .2s}
+.success-wa:hover{background:rgba(37,211,102,0.18)}
+
+/* NAV BTNS */
+.form-nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:10px}
+.btn-back{background:transparent;border:1.5px solid var(--border);color:var(--text-muted);padding:11px 20px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-back:hover{border-color:var(--border-hover);color:var(--text)}
+.btn-next{background:var(--gold);color:#111;padding:11px 26px;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:none;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px}
+.btn-next:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-submit{background:linear-gradient(135deg,var(--gold) 0%,#e0a830 100%);color:#111;padding:15px 32px;border-radius:var(--radius-sm);font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;border:none;font-family:'Inter',sans-serif;width:100%;margin-top:16px;letter-spacing:.2px;box-shadow:0 4px 20px rgba(201,168,76,0.25)}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(201,168,76,0.35)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* AUTOSAVE */
+.autosave{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-dim);margin-top:10px;justify-content:center;opacity:0;transition:opacity .4s}
+.autosave.show{opacity:1}
+.autosave-dot{width:5px;height:5px;border-radius:50%;background:#3ddc84}
+
+/* LOADING */
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,10,0.88);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.loading-overlay.active{display:flex}
+.spinner{width:38px;height:38px;border:2.5px solid rgba(201,168,76,0.15);border-top:2.5px solid var(--gold);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-overlay p{font-size:13px;color:var(--text-muted)}
+
+/* SECTION DIVIDER */
+.section-divider{display:flex;align-items:center;gap:10px;margin:18px 0 14px}
+.section-divider span{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);white-space:nowrap}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* INFO BOX */
+.info-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:14px}
+.info-box strong{color:var(--text)}
+
+@media(max-width:520px){
+  .two-col,.plan-grid,.svc-grid,.prueba-grid,.tone-grid{grid-template-columns:1fr}
+  .level-grid{grid-template-columns:1fr 1fr}
+  .card{padding:20px 16px}
+  .form-nav{flex-direction:column-reverse}
+  .btn-back,.btn-next{width:100%;justify-content:center}
+}
+
+/* PCARD hover/selected */
+.pcard:hover{border-color:rgba(201,168,76,0.35) !important;transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,0,0,0.3)}
+.pcard.selected{border-color:var(--gold) !important;box-shadow:0 0 0 1px rgba(201,168,76,0.2)}
+.pcard.pcard-featured.selected{box-shadow:0 0 0 1px rgba(201,168,76,0.4),0 8px 32px rgba(201,168,76,0.15)}
+.pcard:hover .pcard-check,.pcard.selected .pcard-check{border-color:rgba(201,168,76,0.5)}
+.pcard.selected .pcard-check{background:var(--gold);border-color:var(--gold)}
+.pcard.selected .pcard-check::after{content:'✓';font-size:9px;font-weight:700;color:#111}
+/* Plan card hover */
+#planPreset:hover,#planCustom:hover{border-color:rgba(201,168,76,0.3) !important;transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.3)}
+#planPreset.selected,#planCustom.selected{border-color:var(--gold) !important}
+#planPreset.selected .plan-topbar,#planCustom.selected .plan-topbar{opacity:1 !important}
+#planPreset.selected .plan-check,#planCustom.selected .plan-check{background:var(--gold);border-color:var(--gold)}
+#planPreset.selected .plan-check::after,#planCustom.selected .plan-check::after{content:'✓';font-size:10px;font-weight:700;color:#111}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo"><img src="data:image/png;base64,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" alt="DTMS"></a>
+  <div class="nav-timer"><div class="nav-timer-dot"></div>Tarda ~3 minutos</div>
+  <a href="index.html" class="nav-back">← Inicio</a>
+</nav>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap" id="progressBarWrap">
+  <div class="progress-bar-top">
+    <span class="progress-pct" id="progressPct">0% completado</span>
+    <span class="progress-steps-label" id="progressStepsLabel">Paso 1 de 6</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="step-dots" id="stepDots"></div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <p>Enviando tu brief...</p>
+</div>
+
+<!-- HERO -->
+<div class="brief-hero" id="briefHero">
+  <div class="brief-eyebrow">✦ Prueba gratuita de video</div>
+  <h1>Mandanos tu material.<br>Te devolvemos un <em>video editado.</em></h1>
+  <p>Sin pago previo. Sin contratos. Si no te convence, no pagás nada.</p>
+  <div class="hero-badges">
+    <span class="hero-badge">Sin pago previo</span>
+    <span class="hero-badge">2 revisiones incluidas</span>
+    <span class="hero-badge">Entrega en 24h</span>
+  </div>
+  <div class="time-estimate">⏱ <strong>~3 minutos</strong> para completar</div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+
+  <!-- PASO 1: CONTACTO -->
+  <div class="step-panel active" id="step1">
+    <div class="card">
+      <p class="step-label">Paso 1 — Tus datos</p>
+      <h2 class="card-title">¿Con quién hablamos?</h2>
+      <p class="card-sub">Para avisarte cuando el video esté listo y coordinar cualquier detalle.</p>
+      <div class="two-col">
+        <div class="field" id="f-nombre">
+          <label>Nombre <span class="req">*</span></label>
+          <div class="field-wrap"><input type="text" id="nombre" placeholder="María" oninput="liveValidate('nombre')"><span class="valid-icon">✓</span></div>
+          <span class="error-msg">Campo requerido</span>
+        </div>
+        <div class="field" id="f-apellido">
+          <label>Apellido <span class="req">*</span></label>
+          <div class="field-wrap"><input type="text" id="apellido" placeholder="González" oninput="liveValidate('apellido')"><span class="valid-icon">✓</span></div>
+          <span class="error-msg">Campo requerido</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Empresa / Marca</label>
+        <input type="text" id="empresa" placeholder="Clínica Estética Norte (opcional)">
+      </div>
+      <div class="two-col">
+        <div class="field" id="f-email">
+          <label>Email <span class="req">*</span></label>
+          <div class="field-wrap"><input type="email" id="email" placeholder="tu@email.com" oninput="liveValidate('email')"><span class="valid-icon">✓</span></div>
+          <span class="error-msg">Email inválido</span>
+        </div>
+        <div class="field" id="f-whatsapp">
+          <label>WhatsApp <span class="req">*</span></label>
+          <div class="field-wrap"><input type="tel" id="whatsapp" placeholder="+54 9 291 XXX XXXX" oninput="liveValidate('whatsapp')"><span class="valid-icon">✓</span></div>
+          <span class="error-msg">Campo requerido</span>
+        </div>
+      </div>
+      <div class="field" id="f-pais">
+        <label>País <span class="req">*</span></label>
+        <select id="pais">
+          <option value="">Seleccioná tu país</option>
+          <option>España</option><option>Argentina</option><option>México</option>
+          <option>Colombia</option><option>Chile</option><option>Perú</option>
+          <option>Uruguay</option><option>Estados Unidos</option><option>Otro</option>
+        </select>
+        <span class="error-msg">Campo requerido</span>
+      </div>
+    </div>
+    <div class="autosave" id="autosave1"><div class="autosave-dot"></div>Guardado automáticamente</div>
+    <div class="form-nav"><span></span><button class="btn-next" onclick="nextStep(1)">Continuar →</button></div>
+  </div>
+
+  <!-- PASO 2: PLAN -->
+  <div class="step-panel" id="step2">
+    <div class="card" style="background:linear-gradient(160deg,#141414 0%,#0f0f0f 100%);border-color:rgba(255,255,255,0.09);padding:32px 28px">
+      <p class="step-label">Paso 2 — Tu plan</p>
+      <h2 class="card-title" style="font-size:22px">¿Cómo querés armar tu plan?</h2>
+      <p class="card-sub">Todo incluye una edición de video gratuita para que compruebes la calidad antes de comprometerte.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px">
+        <!-- PREDISEÑADO -->
+        <div onclick="selectPlanType(this,'preset')" id="planPreset" style="background:var(--bg3);border:2px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px 22px;cursor:pointer;transition:all .3s;user-select:none;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light));opacity:0;transition:opacity .3s" class="plan-topbar"></div>
+          <div style="font-size:32px;margin-bottom:14px">📦</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;margin-bottom:6px;letter-spacing:-.3px">Pack prediseñado</div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:16px">Packs listos con todo incluido, desde $350/mes. La opción más popular.</div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:18px">
+            <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:7px"><span style="color:var(--gold);font-weight:700">✓</span>5 packs desde $350/mes</div>
+            <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:7px"><span style="color:var(--gold);font-weight:700">✓</span>Todo lo que necesitás en un plan</div>
+            <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:7px"><span style="color:var(--gold);font-weight:700">✓</span>5% descuento pagando adelantado</div>
+            <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:7px"><span style="color:var(--gold);font-weight:700">✓</span>20% descuento pagando anual</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.5px">VER PACKS →</span>
+            <div class="plan-check" style="width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0"></div>
+          </div>
+        </div>
+        <!-- PERSONALIZADO -->
+        <div onclick="selectPlanType(this,'custom')" id="planCustom" style="background:var(--bg3);border:2px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px 22px;cursor:pointer;transition:all .3s;user-select:none;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--blue-light));opacity:0;transition:opacity .3s" class="plan-topbar"></div>
+          <div style="font-size:32px;margin-bottom:14px">⚙️</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;margin-bottom:6px;letter-spacing:-.3px">Pack personalizado</div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:16px">Elegís exactamente los servicios que necesitás. Sin pagar por lo que no usás.</div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:18px">
+            <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:7px"><span style="color:var(--blue-light);font-weight:700">✓</span>Elegís servicio por servicio</div>
+            <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:7px"><span style="color:var(--blue-light);font-weight:700">✓</span>Precio exacto a tu medida</div>
+            <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:7px"><span style="color:var(--blue-light);font-weight:700">✓</span>5% descuento pagando adelantado</div>
+            <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:7px"><span style="color:var(--blue-light);font-weight:700">✓</span>20% descuento pagando anual</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:11px;font-weight:600;color:var(--blue-light);letter-spacing:.5px">ELEGIR SERVICIOS →</span>
+            <div class="plan-check" style="width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0"></div>
+          </div>
+        </div>
+      </div>
+      <span class="error-msg" id="plan-type-error" style="display:none;margin-top:8px">Elegí una opción para continuar</span>
+
+      <!-- PACKS PREDISEÑADOS -->
+      <div id="preset-packs" style="display:none;margin-top:28px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+          <span style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim)">Elegí tu pack</span>
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+
+          <div onclick="selectPack(this,'starter')" style="background:#141414;border:1.5px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;cursor:pointer;transition:all .25s;position:relative" class="pcard">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px">
+              <div><div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px">🥉 Pack Starter</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5">El primer paso para publicar contenido profesional de forma constante.</div></div>
+              <div style="text-align:right;flex-shrink:0"><div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--gold);line-height:1">$350</div><div style="font-size:10px;color:var(--text-dim);margin-top:2px">/mes</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:12px">
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>10 Shorts Estándar</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>10 Guiones incluidos</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>2 revisiones por video</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>Entrega en 24h</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:11px;color:var(--text-dim)">Adelantado: <strong style="color:var(--gold)">$332.50</strong> — ahorrás $17.50</div><div class="pcard-check" style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0"></div></div>
+          </div>
+
+          <div onclick="selectPack(this,'basico')" style="background:#141414;border:1.5px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;cursor:pointer;transition:all .25s;position:relative" class="pcard">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px">
+              <div><div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px">🥈 Pack Básico</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5">Volumen alto con guión para cada video y miniaturas. Presencia diaria en redes.</div></div>
+              <div style="text-align:right;flex-shrink:0"><div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--gold);line-height:1">$750</div><div style="font-size:10px;color:var(--text-dim);margin-top:2px">/mes</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:12px">
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>20 Shorts Estándar</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>20 Guiones incluidos</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>5 Miniaturas</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>2 revisiones por video</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:11px;color:var(--text-dim)">Adelantado: <strong style="color:var(--gold)">$712.50</strong> — ahorrás $37.50</div><div class="pcard-check" style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0"></div></div>
+          </div>
+
+          <div onclick="selectPack(this,'esencial')" style="background:linear-gradient(145deg,rgba(201,168,76,0.08) 0%,#141414 60%);border:2px solid rgba(201,168,76,0.4);border-radius:14px;padding:20px;cursor:pointer;transition:all .25s;position:relative" class="pcard pcard-featured">
+            <div style="position:absolute;top:-1px;left:20px;background:var(--gold);color:#111;font-size:9px;font-weight:800;letter-spacing:1px;padding:3px 12px;border-radius:0 0 8px 8px;text-transform:uppercase">⭐ Más elegido</div>
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;margin-top:10px">
+              <div><div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px">🥇 Pack Esencial</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5">Estándar + Premium en el mismo pack. Para marcas que quieren escalar sin comprometer calidad.</div></div>
+              <div style="text-align:right;flex-shrink:0"><div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--gold);line-height:1">$1.725</div><div style="font-size:10px;color:var(--text-dim);margin-top:2px">/mes</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:12px">
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>30 Shorts Estándar</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>10 Shorts Premium</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>40 Guiones incluidos</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>5 Posts / Carruseles</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>5 Miniaturas</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>2 revisiones por video</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:11px;color:var(--text-dim)">Adelantado: <strong style="color:var(--gold)">$1.638.75</strong> — ahorrás $86.25</div><div class="pcard-check" style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0"></div></div>
+          </div>
+
+          <div onclick="selectPack(this,'profesional')" style="background:#141414;border:1.5px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;cursor:pointer;transition:all .25s;position:relative" class="pcard">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px">
+              <div><div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px">💼 Pack Profesional</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5">Redes sociales, YouTube y gestión en un solo lugar. Para negocios que delegan el contenido y se enfocan en crecer.</div></div>
+              <div style="text-align:right;flex-shrink:0"><div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--gold);line-height:1">$2.645</div><div style="font-size:10px;color:var(--text-dim);margin-top:2px">/mes</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:12px">
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>40 Shorts Estándar</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>15 Shorts Premium</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>55 Guiones incluidos</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>1 Video largo (≤10 min)</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>3 Posts / Carruseles</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>5 Miniaturas</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>Manejo 1 red social</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px"><span style="color:var(--gold);font-size:10px">✓</span>2 revisiones por video</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:11px;color:var(--text-dim)">Adelantado: <strong style="color:var(--gold)">$2.512.75</strong> — ahorrás $132.25</div><div class="pcard-check" style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0"></div></div>
+          </div>
+
+          <div onclick="selectPack(this,'full')" style="background:linear-gradient(145deg,rgba(91,157,255,0.07) 0%,#141414 60%);border:1.5px solid rgba(91,157,255,0.25);border-radius:14px;padding:20px;cursor:pointer;transition:all .25s;position:relative" class="pcard">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px">
+              <div><div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px">👑 Pack Full</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5">Hasta 2 reels por día + Meta Ads. Te enfocás en tu negocio, nosotros manejamos todo lo demás.</div></div>
+              <div style="text-align:right;flex-shrink:0"><div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--blue-light);line-height:1">$3.950</div><div style="font-size:10px;color:var(--text-dim);margin-top:2px">/mes + Meta Ads</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:12px">
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>60 Shorts Estándar</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>20 Shorts Premium</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>80 Guiones incluidos</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>4 Videos largos (≤10 min)</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>4 Posts / Carruseles</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>6 Miniaturas</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>2 Imágenes para ads</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>Manejo 2 redes sociales</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>Meta Ads gestión</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>Reporte mensual</div>
+              <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;background:rgba(91,157,255,0.06);border:1px solid rgba(91,157,255,0.1);padding:6px 8px;border-radius:6px"><span style="color:var(--blue-light);font-size:10px">✓</span>2 revisiones por video</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:11px;color:var(--text-dim)">Adelantado: <strong style="color:var(--blue-light)">$3.752.50</strong> — ahorrás $197.50</div><div class="pcard-check" style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(91,157,255,0.3);display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0"></div></div>
+          </div>
+
+        </div>
+        <span class="error-msg" id="pack-error" style="display:none;margin-top:8px">Elegí un pack para continuar</span>
+      </div>
+
+      <!-- PACK PERSONALIZADO -->
+      <div id="custom-svcs" style="display:none;margin-top:20px">
+        <div class="section-divider"><span>Elegí tus servicios</span></div>
+        <div class="svc-grid">
+          <div class="svc-card" onclick="toggleSvc(this,'shorts')"><div class="svc-icon">📱</div><div class="svc-text"><strong>Shorts / Reels</strong><span>Desde $20/video</span></div><div class="svc-check"></div></div>
+          <div class="svc-card" onclick="toggleSvc(this,'largo')"><div class="svc-icon">🎬</div><div class="svc-text"><strong>Video largo</strong><span>Desde $8/min</span></div><div class="svc-check"></div></div>
+          <div class="svc-card" onclick="toggleSvc(this,'guiones')"><div class="svc-icon">✍️</div><div class="svc-text"><strong>Guiones</strong><span>Short $15 · Largo $25</span></div><div class="svc-check"></div></div>
+          <div class="svc-card" onclick="toggleSvc(this,'diseno')"><div class="svc-icon">🎨</div><div class="svc-text"><strong>Diseño / Miniaturas</strong><span>Desde $10/pieza</span></div><div class="svc-check"></div></div>
+          <div class="svc-card" onclick="toggleSvc(this,'idioma')"><div class="svc-icon">🌐</div><div class="svc-text"><strong>Otro idioma</strong><span>Short $18 · Largo $10/min</span></div><div class="svc-check"></div></div>
+          <div class="svc-card" onclick="toggleSvc(this,'ia')"><div class="svc-icon">🤖</div><div class="svc-text"><strong>Videos con IA</strong><span>Desde $20/video</span></div><div class="svc-check"></div></div>
+          <div class="svc-card" onclick="toggleSvc(this,'redes')"><div class="svc-icon">📣</div><div class="svc-text"><strong>Manejo de redes</strong><span>Desde $200/mes</span></div><div class="svc-check"></div></div>
+          <div class="svc-card" onclick="toggleSvc(this,'ads')"><div class="svc-icon">🎯</div><div class="svc-text"><strong>Meta Ads</strong><span>$150 base + 15% del gasto</span></div><div class="svc-check"></div></div>
+          <div class="svc-card" onclick="toggleSvc(this,'grabacion')"><div class="svc-icon">📷</div><div class="svc-text"><strong>Grabación en locación</strong><span>Precio según ciudad</span></div><div class="svc-check"></div></div>
+        </div>
+        <span class="error-msg" id="svc-error" style="display:none;margin-top:8px">Elegí al menos un servicio</span>
+      </div>
+
+    </div>
+    <div class="autosave" id="autosave2"><div class="autosave-dot"></div>Guardado automáticamente</div>
+    <div class="form-nav">
+      <button class="btn-back" onclick="prevStep(2)">← Atrás</button>
+      <button class="btn-next" onclick="nextStep(2)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- PASO 3: DETALLES -->
+  <div class="step-panel" id="step3">
+    <div class="card">
+      <p class="step-label">Paso 3 — Detalles del proyecto</p>
+      <h2 class="card-title">Lo que necesita el editor</h2>
+      <p class="card-sub">Completá solo lo que aplica a los servicios que elegiste.</p>
+
+      <!-- SHORTS -->
+      <div class="cond-block" id="cond-shorts">
+        <p class="cond-title">📱 Shorts / Reels</p>
+        <div class="field">
+          <label>Nivel de edición</label>
+          <div class="level-grid">
+            <div class="level-card" onclick="selectOne(this,'nivel-shorts','std')">
+              <div class="level-card-price">$20</div>
+              <div class="level-card-name">Estándar</div>
+              <div class="level-card-desc">Cortes, subtítulos, música y efectos básicos</div>
+              <div class="level-tooltip">Ideal para contenido de alto volumen. Incluye: cortes limpios, subtítulos animados, música de fondo y transiciones simples.</div>
+            </div>
+            <div class="level-card" onclick="selectOne(this,'nivel-shorts','pre')">
+              <div class="level-card-price">$40</div>
+              <div class="level-card-name">Premium</div>
+              <div class="level-card-desc">Motion graphics, color grading y efectos avanzados</div>
+              <div class="level-tooltip">Para contenido de alta calidad visual. Incluye: motion graphics personalizados, corrección de color profesional, efectos cinematográficos y transiciones premium.</div>
+            </div>
+          </div>
+          <input type="hidden" id="nivel-shorts" value="">
+        </div>
+        <div class="field">
+          <label>Tipo de prueba</label>
+          <div class="prueba-grid">
+            <div class="prueba-card" onclick="selectPrueba(this,'preview')">
+              <div class="prueba-card-icon">✂️</div>
+              <strong>Preview 20 segundos</strong>
+              <span>Mostramos la calidad de la edición en un clip corto sin marca de agua</span>
+              <span class="prueba-tag free">Gratis</span>
+            </div>
+            <div class="prueba-card" onclick="selectPrueba(this,'completo')">
+              <div class="prueba-card-icon">🎬</div>
+              <strong>Video completo</strong>
+              <span>Recibís el video completo con marca de agua. Sin marca de agua al contratar</span>
+              <span class="prueba-tag paid">Gratis · sin marca de agua al pagar</span>
+            </div>
+          </div>
+          <input type="hidden" id="tipo-prueba" value="">
+        </div>
+        <div class="revisiones-note">✅ <div><strong>2 revisiones incluidas</strong> en cada video — sin costo extra. Pedís los cambios y te los entregamos.</div></div>
+        <div class="field" style="margin-top:14px">
+          <label>Plataforma destino <small style="color:var(--text-dim)">(una sola)</small></label>
+          <div class="radio-group" id="plat-shorts"></div>
+          <input type="hidden" id="plataforma-shorts" value="">
+        </div>
+        <div class="field">
+          <label>Formato de entrega <small style="color:var(--text-dim)">(uno solo)</small></label>
+          <div class="radio-group" id="formato-shorts"></div>
+          <input type="hidden" id="formato-shorts-val" value="">
+        </div>
+        <div class="field">
+          <label>Notas para el editor</label>
+          <textarea id="notas-shorts" placeholder="Ej: Usar la toma del minuto 2:30. Cortar donde me trabo en el minuto 4. El gancho va al principio..."></textarea>
+        </div>
+      </div>
+
+      <!-- LARGO -->
+      <div class="cond-block" id="cond-largo">
+        <p class="cond-title">🎬 Video Largo</p>
+        <div class="field">
+          <label>Tipo de video</label>
+          <select id="largo-tipo"><option value="">Seleccioná</option><option>YouTube / Tutorial</option><option>Podcast o entrevista</option><option>Corporativo / Institucional</option><option>Publicidad / Promo</option><option>Otro</option></select>
+        </div>
+        <div class="field">
+          <label>Nivel de edición</label>
+          <div class="level-grid">
+            <div class="level-card" onclick="selectOne(this,'nivel-largo','bas')">
+              <div class="level-card-price">$8<span style="font-size:11px;color:var(--text-muted)">/min</span></div>
+              <div class="level-card-name">Básico</div>
+              <div class="level-card-desc">Cortes, música y títulos simples</div>
+              <div class="level-tooltip">Incluye: cortes limpios, música de fondo, títulos simples y subtítulos básicos.</div>
+            </div>
+            <div class="level-card" onclick="selectOne(this,'nivel-largo','int')">
+              <div class="level-card-price">$15<span style="font-size:11px;color:var(--text-muted)">/min</span></div>
+              <div class="level-card-name">Intermedio</div>
+              <div class="level-card-desc">+ Motion, color, B-roll</div>
+              <div class="level-tooltip">Incluye todo el Básico más: corrección de color profesional, motion graphics simples e integración de B-roll.</div>
+            </div>
+            <div class="level-card" onclick="selectOne(this,'nivel-largo','pro')">
+              <div class="level-card-price">$20<span style="font-size:11px;color:var(--text-muted)">/min</span></div>
+              <div class="level-card-name">Premium</div>
+              <div class="level-card-desc">+ Animaciones y gráficos avanzados</div>
+              <div class="level-tooltip">Incluye todo el Intermedio más: animaciones personalizadas, gráficos complejos y efectos visuales premium.</div>
+            </div>
+          </div>
+          <input type="hidden" id="nivel-largo" value="">
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label>Cantidad de videos</label>
+            <select id="largo-cant" onchange="calcLargo()">
+              <option value="">—</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="5">5</option><option value="10">10</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Duración estimada c/u</label>
+            <select id="largo-dur" onchange="calcLargo()">
+              <option value="">—</option><option value="5">Hasta 5 min</option><option value="10">5–10 min</option><option value="20">10–20 min</option><option value="30">20–30 min</option><option value="60">30–60 min</option><option value="120">+60 min</option>
+            </select>
+          </div>
+        </div>
+        <div class="precio-calc" id="largo-calc"><strong>Precio estimado:</strong> <span id="largo-calc-txt"></span></div>
+        <div class="revisiones-note" style="margin-top:8px">✅ <div><strong>2 revisiones incluidas</strong> — Entrega en <strong>24 horas</strong> desde que recibimos todo el material.</div></div>
+        <div class="field" style="margin-top:14px">
+          <label>Formato de entrega <small style="color:var(--text-dim)">(uno solo)</small></label>
+          <div class="radio-group" id="formato-largo"></div>
+          <input type="hidden" id="formato-largo-val" value="">
+        </div>
+        <div class="field">
+          <label>Notas para el editor</label>
+          <textarea id="notas-largo" placeholder="Ej: Hay partes donde me trabo, cortarlas. Usar el clip 2 como intro. El segmento del minuto 12 va primero..."></textarea>
+        </div>
+      </div>
+
+      <!-- GUIONES -->
+      <div class="cond-block" id="cond-guiones">
+        <p class="cond-title">✍️ Guiones</p>
+        <div class="field"><label>Tipo de guión</label>
+          <select id="guion-tipo"><option value="">Seleccioná</option><option>Short/Reel — $15</option><option>Video largo — $25</option><option>Ambos</option></select>
+        </div>
+        <div class="field"><label>Tema o idea</label>
+          <textarea id="guion-tema" placeholder="¿De qué trata el video? ¿Qué querés comunicar?"></textarea>
+        </div>
+      </div>
+
+      <!-- DISEÑO -->
+      <div class="cond-block" id="cond-diseno">
+        <p class="cond-title">🎨 Diseño / Miniaturas</p>
+        <div class="field"><label>¿Qué necesitás? (podés elegir varios)</label>
+          <div class="multi-pills" id="diseno-pills"></div>
+        </div>
+        <div class="field"><label>Cantidad</label>
+          <select id="diseno-cant"><option value="">Seleccioná</option><option>1 pieza</option><option>2–3 piezas</option><option>4–5 piezas</option><option>Más de 5</option></select>
+        </div>
+      </div>
+
+      <!-- IDIOMA -->
+      <div class="cond-block" id="cond-idioma">
+        <p class="cond-title">🌐 Versión en otro idioma</p>
+        <div class="two-col">
+          <div class="field"><label>Idioma destino</label>
+            <select id="idioma-dest"><option value="">Seleccioná</option><option>Inglés</option><option>Portugués</option><option>Francés</option><option>Alemán</option><option>Otro</option></select>
+          </div>
+          <div class="field"><label>Formato</label>
+            <div class="radio-group" id="idioma-fmt"></div>
+            <input type="hidden" id="idioma-fmt-val" value="">
+          </div>
+        </div>
+      </div>
+
+      <!-- IA -->
+      <div class="cond-block" id="cond-ia">
+        <p class="cond-title">🤖 Video con IA</p>
+        <div class="field"><label>Tipo</label>
+          <div class="level-grid">
+            <div class="level-card" onclick="selectOne(this,'ia-tipo','img')">
+              <div class="level-card-price">$20–25</div>
+              <div class="level-card-name">Imágenes</div>
+              <div class="level-card-desc">Short con imágenes estáticas animadas</div>
+              <div class="level-tooltip">Video creado con imágenes generadas por IA, animadas y sincronizadas con voz en off.</div>
+            </div>
+            <div class="level-card" onclick="selectOne(this,'ia-tipo','anim')">
+              <div class="level-card-price">$35–50</div>
+              <div class="level-card-name">Animado</div>
+              <div class="level-card-desc">Short cinematográfico con video IA</div>
+              <div class="level-tooltip">Video animado completo generado con IA. Mayor calidad visual, más cercano a video real.</div>
+            </div>
+          </div>
+          <input type="hidden" id="ia-tipo" value="">
+        </div>
+        <div class="field"><label>¿Tenés guión?</label>
+          <select id="ia-guion"><option value="">Seleccioná</option><option>Sí, tengo el guión listo</option><option>Tengo la idea, necesito que lo escriban</option><option>Necesito guión desde cero</option></select>
+        </div>
+        <div class="field"><label>Tema / idea</label>
+          <textarea id="ia-tema" placeholder="¿De qué trata el video? ¿Qué mensaje querés dar?"></textarea>
+        </div>
+      </div>
+
+      <!-- REDES -->
+      <div class="cond-block" id="cond-redes">
+        <p class="cond-title">📣 Manejo de redes</p>
+        <div class="field"><label>¿Qué redes? (podés elegir varias)</label>
+          <div class="multi-pills" id="redes-pills"></div>
+        </div>
+        <div class="field"><label>Accesos</label>
+          <textarea id="redes-accesos" placeholder="¿Cómo le compartís el acceso al gestor? (usuario temporal, Business Manager, etc.)"></textarea>
+        </div>
+      </div>
+
+      <!-- ADS -->
+      <div class="cond-block" id="cond-ads">
+        <p class="cond-title">🎯 Meta Ads</p>
+        <div class="two-col">
+          <div class="field"><label>¿Tenés cuenta activa?</label>
+            <select id="ads-cuenta"><option value="">Seleccioná</option><option>Sí, con historial</option><option>Sí, cuenta nueva</option><option>No, necesito crearla</option></select>
+          </div>
+          <div class="field"><label>Presupuesto mensual</label>
+            <select id="ads-presupuesto"><option value="">Seleccioná</option><option>Menos de $300</option><option>$300–$700</option><option>$700–$1.500</option><option>Más de $1.500</option></select>
+          </div>
+        </div>
+        <div class="field"><label>Objetivo principal</label>
+          <select id="ads-objetivo"><option value="">Seleccioná</option><option>Reconocimiento de marca</option><option>Generación de leads</option><option>Ventas / conversiones</option><option>Tráfico al sitio web</option></select>
+        </div>
+      </div>
+
+      <!-- GRABACION -->
+      <div class="cond-block" id="cond-grabacion">
+        <p class="cond-title">📷 Grabación en locación</p>
+        <div class="two-col">
+          <div class="field"><label>Ciudad</label>
+            <input type="text" id="grab-ciudad" placeholder="Madrid, Buenos Aires...">
+          </div>
+          <div class="field"><label>Duración</label>
+            <select id="grab-dur"><option value="">Seleccioná</option><option>Hasta 3 horas (incluido)</option><option>Más de 3 horas (cotizar)</option><option>Múltiples locaciones (cotizar)</option></select>
+          </div>
+        </div>
+        <div class="field"><label>¿Qué se va a grabar?</label>
+          <textarea id="grab-desc" placeholder="Tipo de contenido, locación, número de personas..."></textarea>
+        </div>
+        <div class="info-box">⚠ El precio varía según la ciudad. Te confirmamos el costo exacto antes de cerrar — <strong>sin sorpresas</strong>.</div>
+      </div>
+
+    </div>
+    <div class="autosave" id="autosave3"><div class="autosave-dot"></div>Guardado automáticamente</div>
+    <div class="form-nav">
+      <button class="btn-back" onclick="prevStep(3)">← Atrás</button>
+      <button class="btn-next" onclick="nextStep(3)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- PASO 4: ESTILO -->
+  <div class="step-panel" id="step4">
+    <div class="card">
+      <p class="step-label">Paso 4 — Estilo y tono</p>
+      <h2 class="card-title">¿Cómo tiene que verse y sonar?</h2>
+      <p class="card-sub">Esto le dice al editor la personalidad de tu marca.</p>
+      <div class="field">
+        <label>Estilo visual (podés elegir varios)</label>
+        <div class="multi-pills" id="estilo-pills"></div>
+      </div>
+      <div class="field" style="margin-top:16px">
+        <label>Tono de comunicación</label>
+        <div class="tone-grid">
+          <div class="tone-card" onclick="selectTone(this,'informal')"><strong>😄 Informal</strong><span>Relajado y cercano, como hablar con un amigo</span></div>
+          <div class="tone-card" onclick="selectTone(this,'neutro')"><strong>🤝 Neutro</strong><span>Profesional pero accesible, sin ser frío</span></div>
+          <div class="tone-card" onclick="selectTone(this,'formal')"><strong>👔 Formal</strong><span>Corporativo, serio e institucional</span></div>
+        </div>
+        <input type="hidden" id="tono-val" value="">
+      </div>
+      <div class="field" style="margin-top:16px">
+        <label>Referencias de estilo</label>
+        <textarea id="referencias" placeholder="Canales, marcas o videos que te gusten. Pegá links directamente si tenés."></textarea>
+        <p class="field-hint">Cuanto más específico, más fácil para el editor replicar el estilo.</p>
+      </div>
+      <div class="field">
+        <label>Branding</label>
+        <div class="info-box">Creá dentro de tu carpeta de Drive una subcarpeta <strong>📁 Branding</strong> con: logo en PNG, colores de marca (en hex si tenés) y fuentes. El editor lo usa directamente.</div>
+      </div>
+      <div class="field">
+        <label>Intro / Outro</label>
+        <select id="intro-outro"><option value="">Seleccioná</option><option>Sí, lo incluyo en la carpeta Drive</option><option>No, pueden crear uno</option><option>No necesito intro/outro</option></select>
+      </div>
+    </div>
+    <div class="autosave" id="autosave4"><div class="autosave-dot"></div>Guardado automáticamente</div>
+    <div class="form-nav">
+      <button class="btn-back" onclick="prevStep(4)">← Atrás</button>
+      <button class="btn-next" onclick="nextStep(4)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- PASO 5: MATERIAL -->
+  <div class="step-panel" id="step5">
+    <div class="card">
+      <p class="step-label">Paso 5 — Material</p>
+      <h2 class="card-title">El material para arrancar</h2>
+      <p class="card-sub">Compartí los archivos para que el editor tenga todo listo.</p>
+      <div class="drive-box">
+        <div class="drive-box-icon">📁</div>
+        <p><strong>¿Cómo compartir tu material?</strong><br>Subí el video a Google Drive → click derecho → Compartir → "Cualquiera con el enlace puede ver" → pegá el link abajo.</p>
+      </div>
+      <div class="field" id="f-drive">
+        <label>Link de Google Drive <span class="req">*</span></label>
+        <input type="url" id="drive-link" placeholder="https://drive.google.com/drive/folders/...">
+        <p class="field-hint">Si no tenés el material listo todavía, escribí "Lo envío por WhatsApp".</p>
+        <span class="error-msg">Campo requerido</span>
+      </div>
+      <div class="field">
+        <label>Música</label>
+        <select id="musica"><option value="">Seleccioná</option><option>Que el editor elija (libre de derechos)</option><option>La incluyo en la carpeta Drive</option><option>Sin música</option></select>
+      </div>
+      <div class="field">
+        <label>¿Qué tipo de música buscás?</label>
+        <textarea id="musica-desc" placeholder="Ej: Tranquila y profesional, sin letra, similar a lo que usa MindValley..." style="min-height:60px"></textarea>
+      </div>
+      <div class="field">
+        <label>Subtítulos</label>
+        <select id="subtitulos"><option value="">Seleccioná</option><option>Sí, quiero subtítulos</option><option>No necesito subtítulos</option><option>Solo si va con el formato</option></select>
+      </div>
+      <div class="field">
+        <label>¿Hay urgencia?</label>
+        <select id="urgencia"><option value="">Seleccioná</option><option>No, entrega normal</option><option>Sí, necesito en menos de 6h (+30% sobre el precio)</option></select>
+      </div>
+    </div>
+    <div class="autosave" id="autosave5"><div class="autosave-dot"></div>Guardado automáticamente</div>
+    <div class="form-nav">
+      <button class="btn-back" onclick="prevStep(5)">← Atrás</button>
+      <button class="btn-next" onclick="nextStep(5)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- PASO 6: RESUMEN -->
+  <div class="step-panel" id="step6">
+    <div class="card">
+      <p class="step-label">Paso 6 — Resumen</p>
+      <h2 class="card-title">Todo listo para enviar</h2>
+      <p class="card-sub">Esto es exactamente lo que recibe el editor. Revisá antes de confirmar.</p>
+      <div id="resumen-contenido"></div>
+      <div class="field" style="margin-top:16px">
+        <label>¿Algo más para el editor?</label>
+        <textarea id="comentario-final" placeholder="Cualquier aclaración extra que no hayas podido poner antes..."></textarea>
+      </div>
+      <button class="btn-submit" onclick="submitForm()" id="btn-submit">🚀 Enviar brief y arrancar mi prueba gratuita</button>
+      <p style="text-align:center;font-size:11px;color:var(--text-dim);margin-top:10px">Te contactamos por WhatsApp en menos de 24h para confirmar.</p>
+    </div>
+    <div class="form-nav">
+      <button class="btn-back" onclick="prevStep(6)">← Revisar</button>
+      <span></span>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-panel" id="successPanel">
+    <div class="success-icon-wrap">🎬</div>
+    <h2>¡Brief recibido!</h2>
+    <p>Nuestro equipo ya tiene todo lo que necesita para arrancar. Esto es lo que pasa ahora:</p>
+    <div class="next-steps">
+      <div class="next-step done"><div class="next-step-num">✓</div><div class="next-step-text"><strong>Brief recibido</strong><span>Ya llegó a nuestro equipo</span></div></div>
+      <div class="next-step"><div class="next-step-num">2</div><div class="next-step-text"><strong>Te contactamos</strong><span>Por WhatsApp en menos de 24h para confirmar</span></div></div>
+      <div class="next-step"><div class="next-step-num">3</div><div class="next-step-text"><strong>El editor arranca</strong><span>Con toda la info que nos diste, sin preguntarte nada más</span></div></div>
+      <div class="next-step"><div class="next-step-num">4</div><div class="next-step-text"><strong>Recibís tu video</strong><span>En 24–48h listo para publicar</span></div></div>
+    </div>
+    <a href="https://wa.me/5492914293433" target="_blank" class="success-wa">💬 Escribinos si tenés alguna duda</a>
+  </div>
+
+</div>
+
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw8-j5V7gKSmnz1SgzmfwZZpN9iA5JWIzvOeRotCo8mLiIzKtvs0x8uSnoMmRy0zSqENg/exec';
+const TOTAL_STEPS = 6;
+let currentStep = 1;
+let planType = ''; // 'preset' | 'custom'
+let selectedPack = '';
+const selectedSvcs = new Set();
+
+// ── INIT PILLS ──
+const multiPillsData = {
+  'diseno-pills': ['Miniatura/Thumbnail','Post','Carrusel','Imagen para ads','Intro/Outro'],
+  'redes-pills': ['Instagram','TikTok','Facebook','YouTube','LinkedIn'],
+  'estilo-pills': ['Dinámico y rápido','Minimalista y limpio','Cinematográfico','Colorido','Corporativo','Educativo'],
+};
+Object.entries(multiPillsData).forEach(([id,items]) => {
+  const c = document.getElementById(id);
+  if (!c) return;
+  items.forEach(item => {
+    const p = document.createElement('div');
+    p.className = 'multi-pill';
+    p.textContent = item;
+    p.dataset.val = item;
+    p.addEventListener('click', () => p.classList.toggle('selected'));
+    c.appendChild(p);
+  });
+});
+
+const radioPillsData = {
+  'plat-shorts': ['Instagram','TikTok','YouTube Shorts','Facebook'],
+  'formato-shorts': ['Vertical 9:16','Cuadrado 1:1','Horizontal 16:9'],
+  'formato-largo': ['Horizontal 16:9','Vertical 9:16','Cuadrado 1:1'],
+  'idioma-fmt': ['Doblaje con IA','Subtítulos animados','Solo subtítulos'],
+};
+Object.entries(radioPillsData).forEach(([id,items]) => {
+  const c = document.getElementById(id);
+  if (!c) return;
+  const hiddenId = id === 'plat-shorts' ? 'plataforma-shorts' : id === 'formato-shorts' ? 'formato-shorts-val' : id === 'formato-largo' ? 'formato-largo-val' : 'idioma-fmt-val';
+  items.forEach(item => {
+    const p = document.createElement('div');
+    p.className = 'radio-pill';
+    p.textContent = item;
+    p.addEventListener('click', () => {
+      c.querySelectorAll('.radio-pill').forEach(x => x.classList.remove('selected'));
+      p.classList.add('selected');
+      document.getElementById(hiddenId).value = item;
+    });
+    c.appendChild(p);
+  });
+});
+
+// Init step dots
+const dotWrap = document.getElementById('stepDots');
+for (let i = 0; i < TOTAL_STEPS; i++) {
+  const d = document.createElement('div');
+  d.className = 'step-dot';
+  d.id = 'sdot' + (i+1);
+  dotWrap.appendChild(d);
+}
+
+// ── PLAN TYPE ──
+function selectPlanType(card, type) {
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  planType = type;
+  document.getElementById('preset-packs').style.display = type === 'preset' ? 'block' : 'none';
+  document.getElementById('custom-svcs').style.display = type === 'custom' ? 'block' : 'none';
+  document.getElementById('plan-type-error').style.display = 'none';
+}
+
+// ── PACK SELECT ──
+function selectPack(card, pack) {
+  document.querySelectorAll('.pcard').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedPack = pack;
+  document.getElementById('pack-error').style.display = 'none';
+  // Marcar servicios que incluye el pack
+  const packSvcs = {
+    starter: ['shorts','guiones'],
+    basico: ['shorts','guiones','diseno'],
+    esencial: ['shorts','guiones','diseno'],
+    profesional: ['shorts','largo','guiones','diseno','redes'],
+    full: ['shorts','largo','guiones','diseno','redes','ads'],
+  };
+  selectedSvcs.clear();
+  (packSvcs[pack]||[]).forEach(s => selectedSvcs.add(s));
+}
+
+// ── SVC TOGGLE ──
+function toggleSvc(card, svc) {
+  card.classList.toggle('selected');
+  selectedSvcs[card.classList.contains('selected') ? 'add' : 'delete'](svc);
+}
+
+// ── SELECT ONE (radio cards) ──
+function selectOne(card, hiddenId, val) {
+  const parent = card.parentElement;
+  parent.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById(hiddenId).value = val;
+  if (hiddenId === 'nivel-largo') calcLargo();
+}
+
+// ── PRUEBA ──
+function selectPrueba(card, val) {
+  document.querySelectorAll('.prueba-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById('tipo-prueba').value = val;
+}
+
+// ── TONO ──
+function selectTone(card, val) {
+  document.querySelectorAll('.tone-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById('tono-val').value = val;
+}
+
+// ── COND BLOCKS ──
+function updateCond() {
+  ['shorts','largo','guiones','diseno','idioma','ia','redes','ads','grabacion'].forEach(s => {
+    document.getElementById('cond-'+s).classList[selectedSvcs.has(s) ? 'add' : 'remove']('on');
+  });
+}
+
+// ── PRECIO LARGO ──
+const precMap = {bas:8, int:15, pro:20};
+function calcLargo() {
+  const nv = document.getElementById('nivel-largo').value;
+  const cant = parseInt(document.getElementById('largo-cant').value)||0;
+  const dur = parseInt(document.getElementById('largo-dur').value)||0;
+  const box = document.getElementById('largo-calc');
+  if (nv && cant && dur) {
+    const p = precMap[nv] * cant * dur;
+    document.getElementById('largo-calc-txt').textContent = `${cant} video(s) × ${dur} min × $${precMap[nv]}/min = $${p.toLocaleString('es-AR')}`;
+    box.style.display = 'block';
+  } else { box.style.display = 'none'; }
+}
+document.getElementById('largo-cant').addEventListener('change', calcLargo);
+document.getElementById('largo-dur').addEventListener('change', calcLargo);
+
+// ── LIVE VALIDATE ──
+function liveValidate(id) {
+  const el = document.getElementById(id);
+  const f = document.getElementById('f-'+id);
+  if (!f || !el) return;
+  const ok = id === 'email' ? (el.value.includes('@') && el.value.includes('.')) : el.value.trim().length > 0;
+  f.classList[ok ? 'add' : 'remove']('is-valid');
+  f.classList.remove('has-error');
+}
+
+// ── AUTOSAVE VISUAL ──
+function showAutosave(stepId) {
+  const el = document.getElementById('autosave'+stepId);
+  if (!el) return;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ── PROGRESS ──
+function updateProgress(step) {
+  const pct = Math.round(((step-1)/(TOTAL_STEPS-1))*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressPct').textContent = pct+'% completado';
+  document.getElementById('progressStepsLabel').textContent = `Paso ${step} de ${TOTAL_STEPS}`;
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    const d = document.getElementById('sdot'+i);
+    d.className = 'step-dot' + (i < step ? ' done' : i === step ? ' active' : '');
+  }
+}
+
+// ── NAV ──
+function showStep(n) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  currentStep = n;
+  updateProgress(n);
+  updateCond();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function prevStep(from) { showStep(from-1); }
+function nextStep(from) {
+  if (!validate(from)) return;
+  if (from === 3) updateCond();
+  if (from === 5) buildResumen();
+  showAutosave(from);
+  showStep(from+1);
+}
+
+// ── VALIDATION ──
+function setErr(id, has) {
+  const f = document.getElementById('f-'+id);
+  if (f) f.classList[has ? 'add' : 'remove']('has-error');
+}
+function v(id) { const e = document.getElementById(id); return e ? e.value.trim() : ''; }
+function validate(step) {
+  let ok = true;
+  if (step === 1) {
+    ['nombre','apellido','whatsapp'].forEach(id => { const bad = !v(id); setErr(id, bad); if (bad) ok = false; });
+    const emailBad = !v('email') || !v('email').includes('@');
+    setErr('email', emailBad); if (emailBad) ok = false;
+    const paisBad = !v('pais'); setErr('pais', paisBad); if (paisBad) ok = false;
+  }
+  if (step === 2) {
+    if (!planType) { document.getElementById('plan-type-error').style.display = 'block'; ok = false; }
+    else if (planType === 'preset' && !selectedPack) { document.getElementById('pack-error').style.display = 'block'; ok = false; }
+    else if (planType === 'custom' && selectedSvcs.size === 0) { document.getElementById('svc-error').style.display = 'block'; ok = false; }
+  }
+  if (step === 5) {
+    const bad = !v('drive-link'); setErr('drive', bad); if (bad) ok = false;
+  }
+  return ok;
+}
+
+// ── HELPERS ──
+function mPills(id) { return Array.from(document.querySelectorAll('#'+id+' .multi-pill.selected')).map(p=>p.dataset.val).join(', ')||'—'; }
+function row(label, val) { return val && val !== '—' ? `<div class="resumen-row"><span>${label}</span><strong>${val}</strong></div>` : ''; }
+function block(title, content) { return `<div class="resumen-block"><p class="resumen-block-title">${title}</p>${content}</div>`; }
+
+// ── PACK DETAILS ──
+const packDetails = {
+  starter: {name:'Pack Starter', price:'$350/mes', items:[['10 Shorts Estándar','$200'],['10 Guiones','$150'],['2 revisiones/video','incluido']], discount:'Pago adelantado: $332.50 (ahorrás $17.50) · 20% descuento anual'},
+  basico: {name:'Pack Básico', price:'$750/mes', items:[['20 Shorts Estándar','$400'],['20 Guiones','$300'],['5 Miniaturas','$50'],['2 revisiones/video','incluido']], discount:'Pago adelantado: $712.50 (ahorrás $37.50) · 20% descuento anual'},
+  esencial: {name:'Pack Esencial ⭐', price:'$1.725/mes', items:[['30 Shorts Estándar','$600'],['10 Shorts Premium','$400'],['40 Guiones','$600'],['5 Posts/Carruseles','$75'],['5 Miniaturas','$50'],['2 revisiones/video','incluido']], discount:'Pago adelantado: $1.638.75 (ahorrás $86.25) · 20% descuento anual'},
+  profesional: {name:'Pack Profesional', price:'$2.645/mes', items:[['40 Shorts Estándar','$800'],['15 Shorts Premium','$600'],['55 Guiones','$825'],['1 Video largo interm. ≤10min','$150'],['3 Posts/Carruseles','$45'],['5 Miniaturas','$50'],['Manejo 1 red social','$150'],['2 revisiones/video','incluido']], discount:'Pago adelantado: $2.512.75 (ahorrás $132.25) · 20% descuento anual'},
+  full: {name:'Pack Full 👑', price:'$3.950/mes + Meta Ads', items:[['60 Shorts Estándar','$1.200'],['20 Shorts Premium','$800'],['80 Guiones','$1.200'],['4 Videos largos ≤10min','$600'],['4 Posts/Carruseles','$60'],['6 Miniaturas','$60'],['2 Imágenes para ads','$30'],['Manejo 2 redes sociales','$250'],['Meta Ads gestión','$150+15%'],['Reporte mensual','incluido'],['2 revisiones/video','incluido']], discount:'Pago adelantado: $3.752.50 (ahorrás $197.50) · 20% descuento anual'},
+};
+
+// ── BUILD RESUMEN ──
+function buildResumen() {
+  let html = '';
+  // Contacto
+  html += block('👤 Contacto', row('Nombre',v('nombre')+' '+v('apellido')) + row('Empresa',v('empresa')||'—') + row('Email',v('email')) + row('WhatsApp',v('whatsapp')) + row('País',v('pais')));
+
+  // Plan
+  if (planType === 'preset' && selectedPack) {
+    const pd = packDetails[selectedPack];
+    let packHtml = `<div class="resumen-row"><span>Pack elegido</span><strong>${pd.name}</strong></div>`;
+    packHtml += `<div class="resumen-row"><span>Precio mensual</span><strong style="color:var(--gold)">${pd.price}</strong></div>`;
+    packHtml += '<div style="margin-top:10px">';
+    pd.items.forEach(([s,p]) => { packHtml += `<div class="resumen-pack-item"><span>${s}</span><strong>${p}</strong></div>`; });
+    packHtml += '</div>';
+    packHtml += `<div style="font-size:11px;color:var(--text-dim);margin-top:10px;padding:8px 10px;background:var(--bg4);border-radius:6px">💰 ${pd.discount}</div>`;
+    html += block('📦 Plan elegido', packHtml);
+  } else if (planType === 'custom') {
+    const svcNames = {shorts:'Shorts/Reels',largo:'Video largo',guiones:'Guiones',diseno:'Diseño/Miniaturas',idioma:'Otro idioma',ia:'Videos con IA',redes:'Manejo de redes',ads:'Meta Ads',grabacion:'Grabación en locación'};
+    html += block('⚙️ Pack personalizado', row('Servicios', Array.from(selectedSvcs).map(s=>svcNames[s]).join(', ')));
+  }
+
+  // Video details
+  const nivelSMap = {std:'Estándar ($20/video)',pre:'Premium ($40/video)'};
+  const nivelLMap = {bas:'Básico ($8/min)',int:'Intermedio ($15/min)',pro:'Premium ($20/min)'};
+  const iaMap = {img:'Imágenes ($20-25)',anim:'Animado ($35-50)'};
+
+  if (selectedSvcs.has('shorts') || planType==='preset') {
+    if (document.getElementById('nivel-shorts').value || v('tipo-prueba')) {
+      html += block('📱 Shorts / Reels',
+        row('Nivel', nivelSMap[v('nivel-shorts')]) +
+        row('Tipo de prueba', v('tipo-prueba')==='preview'?'Preview 20 seg sin marca de agua':'Video completo con marca de agua') +
+        row('Plataforma', v('plataforma-shorts')) +
+        row('Formato', v('formato-shorts-val')) +
+        row('Revisiones','2 incluidas') +
+        row('Entrega estimada', v('urgencia').includes('6h') ? 'Menos de 6h (+30%)' : '24 horas') +
+        (v('notas-shorts') ? row('Notas',v('notas-shorts')) : '')
+      );
+    }
+  }
+  if (selectedSvcs.has('largo')) {
+    const calcTxt = document.getElementById('largo-calc-txt').textContent;
+    html += block('🎬 Video Largo',
+      row('Tipo', v('largo-tipo')) +
+      row('Nivel', nivelLMap[v('nivel-largo')]) +
+      row('Cantidad', v('largo-cant') ? v('largo-cant')+' video(s)' : '—') +
+      row('Duración c/u', v('largo-dur') ? v('largo-dur')+' min' : '—') +
+      (calcTxt ? row('Precio estimado', `<span style="color:var(--gold)">${calcTxt}</span>`) : '') +
+      row('Formato', v('formato-largo-val')) +
+      row('Revisiones','2 incluidas') +
+      row('Entrega estimada', v('urgencia').includes('6h') ? 'Menos de 6h (+30%)' : '24 horas desde que recibimos el material') +
+      (v('notas-largo') ? row('Notas',v('notas-largo')) : '')
+    );
+  }
+  if (selectedSvcs.has('guiones')) {
+    html += block('✍️ Guiones', row('Tipo',v('guion-tipo')) + row('Tema',v('guion-tema')));
+  }
+  if (selectedSvcs.has('diseno')) {
+    html += block('🎨 Diseño', row('Piezas',mPills('diseno-pills')) + row('Cantidad',v('diseno-cant')));
+  }
+  if (selectedSvcs.has('idioma')) {
+    html += block('🌐 Otro idioma', row('Idioma destino',v('idioma-dest')) + row('Formato',v('idioma-fmt-val')));
+  }
+  if (selectedSvcs.has('ia')) {
+    html += block('🤖 Video IA', row('Tipo',iaMap[v('ia-tipo')]) + row('Guión',v('ia-guion')) + row('Tema',v('ia-tema')));
+  }
+  if (selectedSvcs.has('redes')) {
+    html += block('📣 Redes', row('Plataformas',mPills('redes-pills')));
+  }
+  if (selectedSvcs.has('ads')) {
+    html += block('🎯 Meta Ads', row('Cuenta',v('ads-cuenta')) + row('Presupuesto',v('ads-presupuesto')) + row('Objetivo',v('ads-objetivo')));
+  }
+  if (selectedSvcs.has('grabacion')) {
+    html += block('📷 Grabación', row('Ciudad',v('grab-ciudad')) + row('Duración',v('grab-dur')) + row('Descripción',v('grab-desc')));
+  }
+
+  html += block('🎨 Estilo',
+    row('Visual',mPills('estilo-pills')) +
+    row('Tono',v('tono-val')) +
+    row('Referencias',v('referencias')) +
+    row('Intro/Outro',v('intro-outro'))
+  );
+  html += block('📁 Material',
+    row('Drive',v('drive-link')) +
+    row('Música',v('musica')) +
+    (v('musica-desc') ? row('Estilo música',v('musica-desc')) : '') +
+    row('Subtítulos',v('subtitulos')) +
+    (v('urgencia').includes('6h') ? row('Urgencia','⚡ Sí — +30% sobre precio') : '')
+  );
+
+  // CTA final
+  const hasVideo = selectedSvcs.has('shorts') || selectedSvcs.has('largo') || selectedSvcs.has('ia') || planType === 'preset';
+  html += `<div style="background:${hasVideo?'rgba(37,211,102,0.07)':'var(--blue-dim)'};border:1px solid ${hasVideo?'rgba(37,211,102,0.2)':'rgba(91,157,255,0.2)'};border-radius:8px;padding:12px 14px;font-size:12px;color:${hasVideo?'#3ddc84':'var(--blue-light)'};text-align:center;margin-top:4px">
+    ${hasVideo ? '✓ Incluye una edición de video gratuita — sin pago previo, sin contratos' : '📋 Te contactamos para armar una propuesta personalizada'}
+  </div>`;
+
+  document.getElementById('resumen-contenido').innerHTML = html;
+
+  // Cambiar texto del botón
+  document.getElementById('btn-submit').textContent = hasVideo
+    ? '🚀 Enviar brief — arrancar prueba gratuita de video'
+    : '🚀 Enviar brief — solicitar propuesta';
+}
+
+// ── SUBMIT ──
+async function submitForm() {
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  const svcNames = {shorts:'Shorts/Reels',largo:'Video largo',guiones:'Guiones',diseno:'Diseño/Miniaturas',idioma:'Otro idioma',ia:'Videos con IA',redes:'Manejo de redes',ads:'Meta Ads',grabacion:'Grabación en locación'};
+  const nivelLMap2 = {bas:'Básico ($8/min)',int:'Intermedio ($15/min)',pro:'Premium ($20/min)'};
+  const nivelSMap2 = {std:'Estándar ($20/video)',pre:'Premium ($40/video)'};
+  const iaMap2 = {img:'Imágenes ($20-25)',anim:'Animado ($35-50)'};
+  const data = {
+    timestamp: new Date().toLocaleString('es-AR'),
+    nombre: v('nombre')+' '+v('apellido'),
+    empresa: v('empresa'), email: v('email'),
+    whatsapp: v('whatsapp'), pais: v('pais'),
+    tipo_plan: planType === 'preset' ? 'Pack prediseñado: '+(packDetails[selectedPack]?.name||selectedPack) : 'Pack personalizado',
+    servicios: Array.from(selectedSvcs).map(s=>svcNames[s]).join(', '),
+    shorts_nivel: nivelSMap2[v('nivel-shorts')]||'',
+    shorts_prueba: v('tipo-prueba'),
+    shorts_plataforma: v('plataforma-shorts'),
+    shorts_formato: v('formato-shorts-val'),
+    shorts_notas: v('notas-shorts'),
+    largo_tipo: v('largo-tipo'),
+    largo_nivel: nivelLMap2[v('nivel-largo')]||'',
+    largo_cant: v('largo-cant'),
+    largo_dur: v('largo-dur'),
+    largo_precio_est: document.getElementById('largo-calc-txt').textContent,
+    largo_formato: v('formato-largo-val'),
+    largo_notas: v('notas-largo'),
+    guion_tipo: v('guion-tipo'), guion_tema: v('guion-tema'),
+    diseno_tipo: mPills('diseno-pills'), diseno_cant: v('diseno-cant'),
+    idioma_dest: v('idioma-dest'), idioma_fmt: v('idioma-fmt-val'),
+    ia_tipo: iaMap2[v('ia-tipo')]||'', ia_guion: v('ia-guion'), ia_tema: v('ia-tema'),
+    redes: mPills('redes-pills'), redes_accesos: v('redes-accesos'),
+    ads_cuenta: v('ads-cuenta'), ads_presupuesto: v('ads-presupuesto'), ads_objetivo: v('ads-objetivo'),
+    grab_ciudad: v('grab-ciudad'), grab_dur: v('grab-dur'), grab_desc: v('grab-desc'),
+    estilo: mPills('estilo-pills'), tono: v('tono-val'),
+    referencias: v('referencias'), intro_outro: v('intro-outro'),
+    drive: v('drive-link'), musica: v('musica'), musica_desc: v('musica-desc'),
+    subtitulos: v('subtitulos'), urgencia: v('urgencia'),
+    comentario: v('comentario-final'),
+  };
+  document.getElementById('loadingOverlay').classList.add('active');
+  try { await fetch(APPS_SCRIPT_URL, {method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); } catch(e){}
+  document.getElementById('loadingOverlay').classList.remove('active');
+  document.getElementById('progressBarWrap').style.display = 'none';
+  document.getElementById('briefHero').style.display = 'none';
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('successPanel').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+updateProgress(1);
+</script>
+</body>
+</html>
